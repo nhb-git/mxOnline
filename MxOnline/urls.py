@@ -18,11 +18,13 @@ from django.urls import path, re_path, include
 from django.conf.urls import url
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
+from django.views.static import serve
 
 import xadmin
 
 from apps.users.views import LoginView, LogoutView, SendSmsView, DynamicLoginView, RegisterView
 from apps.organizations.views import OrgView
+from MxOnline.settings import MEDIA_ROOT
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -34,6 +36,9 @@ urlpatterns = [
     url('^captcha/', include('captcha.urls')),
     re_path('^send_sms/$', csrf_exempt(SendSmsView.as_view()), name='send_sms'),
     re_path('^register/$', RegisterView.as_view(), name='register'),
+
+    # media路由
+    re_path('^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 
     # 机构相关页面
     re_path(r'^org_list/', OrgView.as_view(), name='org_list'),
