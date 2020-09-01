@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'xadmin.apps.XAdminConfig',
     'DjangoUeditor',
     'captcha',
+    'pure_pagination',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,10 @@ YP_APIKEY = ''
 # redis设置
 REDIS_HOST = '192.168.137.131'
 REDIS_PORT = 6379
+
+# 分页相关设置
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 5,
+    'MARGIN_PAGES_DISPLAYED': 2,
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}

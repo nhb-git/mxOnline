@@ -2,7 +2,7 @@ from django.db import models
 
 from apps.users.models import BaseModel
 
-from apps.organizations.models import Teacher
+from apps.organizations.models import Teacher, CourseOrg
 
 
 class Course(BaseModel):
@@ -23,6 +23,11 @@ class Course(BaseModel):
     detail = models.TextField(verbose_name='课程详情')
     image = models.ImageField(verbose_name='课程图片', upload_to='courses/%Y/%m', max_length=100)
     teacher = models.ForeignKey(verbose_name='课程老师', to='organizations.Teacher', on_delete=models.CASCADE)
+    is_classics = models.BooleanField(verbose_name='是否是经典课程', default=False)
+    course_org = models.ForeignKey(
+        verbose_name='课程机构', to='organizations.CourseOrg', on_delete=models.CASCADE,
+        null=True, blank=True
+    )
 
     class Meta:
         verbose_name = '课程信息'
