@@ -3,6 +3,55 @@ from django.views.generic.base import View
 
 from apps.organizations.models import CourseOrg, City
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from apps.organizations.forms import AddAskForm
+from django.http import JsonResponse
+
+
+class OrgTeacherView(View):
+    def get(self, request, org_id, *args, **kwargs):
+        current_page = 'teacher'
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        course_org.click_nums += 1
+        course_org.save()
+        all_teacher = course_org.teacher_set.all()
+        return render(request, 'org-detail-homepage.html', {
+            'all_teacher': all_teacher,
+            'course_org': course_org,
+            'current_page': current_page,
+        })
+
+
+class OrgHomeView(View):
+    def get(self, request, org_id, *args, **kwargs):
+        current_page = 'home'
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        course_org.click_nums += 1
+        course_org.save()
+
+        all_courses = course_org.course_set.all()[:3]
+        all_teacher = course_org.teacher_set.all()[:1]
+        return render(request, 'org-detail-homepage.html', {
+            'all_courses': all_courses,
+            'all_teacher': all_teacher,
+            'course_org': course_org,
+            'current_page': current_page,
+        })
+
+
+class AddAskView(View):
+    def post(self, request, *args, **kwargs):
+        """处理用户的咨询"""
+        userask_form = AddAskForm(request.POST)
+        if userask_form.is_valid():
+            userask_form.save(commit=True)
+            return JsonResponse({
+                "status": "success"
+            })
+        else:
+            return JsonResponse({
+                "status": "fail",
+                "msg": "添加出错"
+            })
 
 
 class OrgView(View):

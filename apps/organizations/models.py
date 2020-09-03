@@ -65,3 +65,6 @@ class Teacher(BaseModel):
 
     def __str__(self):
         return self.name
+
+    def course_nums(self):
+        return self.course_set.count()
